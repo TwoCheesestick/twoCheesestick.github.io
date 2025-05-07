@@ -1,79 +1,59 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <title>MindAR Example</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image.prod.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-   
-    
-  </head>
-  <body style="margin: 0; overflow: hidden;">
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
     <style>
-  .arjs-loader {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+      body { margin: 0; overflow: hidden; }
+      .mindar-ui-loading {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading screen -->
+    <div class="mindar-ui-loading" id="loading">Loading, please wait...</div>
 
-  .arjs-loader div {
-    text-align: center;
-    font-size: 1.25em;
-    color: white;
-  }
-</style>
+    <!-- MindAR scene -->
+    <a-scene
+      mindar-image="imageTargetSrc: https://twocheesestick.github.io/targets.mind"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      embedded
+    >
+      <a-assets>
+        <a-asset-item id="ghost" src="https://raw.githubusercontent.com/OneCheeseStick/ghosts/refs/heads/main/briedis.gltf"></a-asset-item>
+      </a-assets>
 
-<body style="margin : 0px; overflow: hidden;">
-  <!-- minimal loader shown until image descriptors are loaded. Loading may take a while according to the device computational power -->
-  <div class="arjs-loader">
-    <div>Loading, please wait...</div>
-  </div>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-
-  
-    <a-scene mindar-image="imageTargetSrc: https://raw.githubusercontent.com/TwoCheesestick/twoCheesestick.github.io/main/targets.mind" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" inspector="" keyboard-shortcuts="" screenshot="" xr-mode-ui="">
-      <a-asset-item id="ghost" src="https://raw.githubusercontent.com/OneCheeseStick/ghosts/refs/heads/main/briedis.gltf"></a-asset-item>
-      <a-camera position="0 0 0" look-controls="enabled: false" camera="" rotation="" wasd-controls=""></a-camera>
       <a-entity mindar-image-target="targetIndex: 0">
-              
-           <a-entity gltf-model="#ghost" position="0 -0.55 0" rotation="0 0 0" scale="0.2 0.2 0.2"></a-entity>
-          
+        <a-entity
+          gltf-model="#ghost"
+          animation-mixer
+          position="0 -0.55 0"
+          rotation="0 0 0"
+          scale="0.2 0.2 0.2"
+        ></a-entity>
       </a-entity>
-    <canvas class="a-canvas" data-aframe-canvas="true" data-engine="three.js r158" width="702" height="920"></canvas>
-      <div class="a-loader-title" style="display: none;"></div>
-      <div class="a-enter-vr fullscreen" aframe-injected="">
-        <button class="a-enter-vr-button" title="Enter VR mode with a headset or fullscreen without" aframe-injected=""></button>
-      </div><div class="a-orientation-modal a-hidden" aframe-injected=""><button aframe-injected="">Exit VR</button></div>
-      <a-entity light="" data-aframe-default-light="" aframe-injected=""> </a-entity><a-entity light="" position="" data-aframe-default-light="" aframe-injected=""></a-entity></a-scene>
-    <div class="mindar-ui-overlay mindar-ui-loading">
-  <div class="loader">
-</div></div>
- <div class="mindar-ui-overlay mindar-ui-compatibility hidden">
-  <div class="content">
-    <h1>Failed to launch :(</h1>
-    <p>
-      Looks like your device/browser is not compatible.
-    </p>
+    </a-scene>
 
-    <br>
-    <br>
-    <p>
-      Please try the following recommended browsers:
-    </p>
-    <p>
-      For Android device - Chrome
-    </p>
-    <p>
-      For iOS device - Safari
-    </p>
-  </div>
-</div>
+    <script>
+      // Hide loading UI once scene is loaded
+      document.querySelector('a-scene').addEventListener('loaded', () => {
+        document.getElementById('loading').style.display = 'none';
+      });
+    </script>
   </body>
 </html>
